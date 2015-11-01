@@ -1,0 +1,17 @@
+{
+  "name": "earlyenglishbooks-mongodb",
+  "version": "1.0.0",
+  "description": "a mongodb database with node js web service to host early english books headers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "libraries hacked",
+  "license": "ISC",
+  "dependencies": {
+    "filequeue": "^0.5.0",
+    "mongodb": "^2.0.47",
+    "request": "^2.65.0",
+    "xml2js": "^0.4.15"
+  }
+}
