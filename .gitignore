@@ -73,3 +73,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+# Custom
+# =========================
+eeb_xml/*.xml
+db
