@@ -5,8 +5,7 @@ var fs = require("fs"),
 
 var fq = new filequeue(1000);
 var parseString = xml2js.parseString;
-var locations = [];
-var dates = [];
+var locations = {};
 var completed = 0;
 
 fs.readdir("eeb_xml/", function (err, files) {
@@ -29,22 +28,18 @@ fs.readdir("eeb_xml/", function (err, files) {
                     if (desc.publicationStmt[0].pubPlace) {
                         book.publicationStmtPlace = desc.publicationStmt[0].pubPlace[0].trim();
                         if (!locations[book.publicationStmtPlace]) locations[book.publicationStmtPlace] = { "books": [] };
-                        locations[book.publicationStmtPlace]["books"].push(id);
+                        locations[book.publicationStmtPlace]["books"].push(book._id);
                     }
-                    if (desc.publicationStmt[0].date) {
-                        book.publicationStmtDate = desc.publicationStmt[0].date[0].trim();
-                        if (!dates[book.publicationStmtDate]) dates[book.publicationStmtDate] = { "books": [] };
-                        dates[book.publicationStmtDate]["books"].push(id);
-                    }
+                    if (desc.publicationStmt[0].date) book.publicationStmtDate = desc.publicationStmt[0].date[0].trim();
                     if (desc.publicationStmt[0].publisher) book.publicationStmtPublisher = desc.publicationStmt[0].publisher[0].trim();
                     if (desc.publicationStmt[0].notesStmt) book.notes = desc.publicationStmt[0].notesStmt[0].note.trim();
+                    if (result.TEI.teiHeader[0].fileDesc[0].editionStmt[0].edition[0].date) book.editionDate = result.TEI.teiHeader[0].fileDesc[0].editionStmt[0].edition[0].date[0];
 
+                    // For each JSON object, write it out as a file e.g. A00002.json
                     fs.writeFile("eeb_json/" + id + ".json", JSON.stringify(book), function (err) { });
 
-                    if (files.count == completed) {
-                        fs.writeFile("locations.json", JSON.stringify(locations), function (err) { });
-                        fs.writeFile("dates.json", JSON.stringify(dates), function (err) { });
-                    }
+                    // Once they're all done write out a JSON file for all the unique locations, and dates.
+                    if (files.length == completed) fs.writeFile("locations.json", JSON.stringify(locations), function (err) { });
                 }
             });
         });

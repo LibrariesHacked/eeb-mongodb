@@ -16,18 +16,13 @@ fs.readdir("eeb_json/", function (err, files) {
             var book = JSON.parse(data);
             completed++;
 
-            if (book.publicationPlace) {
-                if (!locations[book.publicationPlace]) locations[book.publicationPlace] = { "books": [] };
-                locations[book.publicationPlace]["books"].push(book._id);
-            }
-            if (book.publicationDate) {
-                if (!dates[book.publicationDate]) dates[book.publicationDate] = { "books": [] };
-                dates[book.publicationDate]["books"].push(book._id);
+            if (book.publicationStmtPlace) {
+                if (!locations[book.publicationStmtPlace]) locations[book.publicationStmtPlace] = { "books": [] };
+                locations[book.publicationStmtPlace]["books"].push(book._id);
             }
 
             if (files.length == completed) {
                 fs.writeFile("eeb_json/locations.json", JSON.stringify(locations), function (err) { });
-                fs.writeFile("eeb_json/dates.json", JSON.stringify(dates), function (err) { });
             }
         });
     });
