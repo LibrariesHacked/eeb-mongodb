@@ -17,8 +17,37 @@ fs.readdir("eeb_json/", function (err, files) {
             completed++;
 
             if (book.publicationStmtPlace) {
-                if (!locations[book.publicationStmtPlace]) locations[book.publicationStmtPlace] = { "books": [] };
-                locations[book.publicationStmtPlace]["books"].push(book._id);
+
+                // Do some cleaning up of the data in order to geocode it later
+                var location = book.publicationStmtPlace.toLowerCase()
+                    .replace(' :', '')
+                    .replace('.', '')
+                    .replace('[', '')
+                    .replace(']', '')
+                    .replace('(', '')
+                    .replace(')', '')
+                    .replace('?', '')
+                    .replace(',', '')
+                    .replace(' in ', ' ')
+                    .replace(' at ', ' ')
+                    .replace(' im ', ' ')
+                    .replace('imprynted', '')
+                    .replace('imprinted', '')
+                    .replace('enprynted', '')
+                    .replace('emprynted', '')
+                    .replace('imprentit', '')
+                    .replace('impress', '')
+                    .replace('prentyd', '')
+                    .replace('printet','')
+                    .replace('printed', '')
+                    .replace('prynted', '')
+                    .replace('prented', '')
+                    .replace('england', '')
+                    .replace('newly', '')
+                    .trim();
+
+                if (!locations[location]) locations[location] = { "books": [] };
+                locations[location]["books"].push(book._id);
             }
 
             if (files.length == completed) {

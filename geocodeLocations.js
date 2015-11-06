@@ -19,8 +19,9 @@ fq.readFile("eeb_json/locations.json", "utf8", function (err, data) {
 ////
 var geocode = function () {
 
-    var loc = locations[index];
-    var url = 'http://nominatim.openstreetmap.org/search?q=' + encodeURI(loc.name) + '&format=json';
+    var loc = Object.keys(locations)[index];
+    console.log(loc);
+    var url = 'http://nominatim.openstreetmap.org/search?q=' + encodeURI(loc) + '&format=json';
     console.log(url);
 
     // There is a limit to how often you can call the geocoding service.  Run this on a delay of just over a second
@@ -36,8 +37,8 @@ var geocode = function () {
                 coordinates: [[[bBox[0], bBox[2]], [bBox[1], bBox[2]], [bBox[1], bBox[3]], [bBox[0], bBox[3]], [bBox[0], bBox[2]]]]
             };
 
-            locations[index].locPoint = geoJsonPoint;
-            locations[index].locBound = geoJsonBound;
+            locations[loc].locPoint = geoJsonPoint;
+            locations[loc].locBound = geoJsonBound;
 
             if ((index + 1) == Object.keys(locations).length) {
                 fs.writeFile("eeb_json/locations_geocoded.json", JSON.stringify(locations), function (err) { });

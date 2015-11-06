@@ -21,7 +21,6 @@ fs.readdir("eeb_json/", function (err, files) {
 });
 
 var geocode = function () {
-
     for (var i in booksArray) {
         var book = booksArray[i];
         if (!geoLocations[book.publicationPlace]) {
@@ -53,7 +52,5 @@ var geocode = function () {
             fs.writeFile("eeb_json_geocoded/" + book._id + ".json", JSON.stringify(book), function (err) { });
         }
     }
-
     fs.writeFile("locations.json", JSON.stringify(geoLocations), function (err) { });
-
 };
